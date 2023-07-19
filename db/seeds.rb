@@ -7,7 +7,7 @@ user2 = User.where(email: "test2@example.com").first_or_create(password: "passwo
 user1_recipes = [
   {
     name: 'Classic Pancakes',
-    intructions: 'Mix the dry ingredients in one bowl and wet ingredients in another. Combine the two and cook the batter on a griddle.',
+    instructions: 'Mix the dry ingredients in one bowl and wet ingredients in another. Combine the two and cook the batter on a griddle.',
     cook_time: '15 minutes',
     ingredients: 'Flour, milk, eggs, baking powder, sugar, salt',
     course: 'Breakfast',
@@ -18,7 +18,7 @@ user1_recipes = [
   },
   {
     name: 'Vegetarian Pasta Primavera',
-    intructions: 'Boil the pasta, sauté vegetables, and mix everything with sauce.',
+    instructions: 'Boil the pasta, sauté vegetables, and mix everything with sauce.',
     cook_time: '30 minutes',
     ingredients: 'Pasta, zucchini, broccoli, bell peppers, cherry tomatoes, Alfredo sauce',
     course: 'Dinner',
@@ -33,7 +33,7 @@ user1_recipes = [
 user2_recipes = [
   {
     name: 'Grilled Chicken Salad',
-    intructions: 'Grill the chicken, chop the vegetables, and toss everything together with dressing.',
+    instructions: 'Grill the chicken, chop the vegetables, and toss everything together with dressing.',
     cook_time: '25 minutes',
     ingredients: 'Chicken breasts, lettuce, tomatoes, cucumbers, bell peppers, dressing',
     course: 'Lunch',
@@ -44,7 +44,7 @@ user2_recipes = [
   },
   {
     name: 'Chocolate Chip Cookies',
-    intructions: 'Cream butter and sugar, mix in eggs and vanilla, add dry ingredients and chocolate chips, and bake the cookies.',
+    instructions: 'Cream butter and sugar, mix in eggs and vanilla, add dry ingredients and chocolate chips, and bake the cookies.',
     cook_time: '12 minutes',
     ingredients: 'Butter, sugar, eggs, vanilla extract, flour, baking soda, salt, chocolate chips',
     course: 'Dessert',
