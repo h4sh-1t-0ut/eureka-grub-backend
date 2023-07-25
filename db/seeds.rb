@@ -1,68 +1,53 @@
-user1 = User.where(email: "test1@example.com").first_or_create(password: "password", password_confirmation: "password")
-user2 = User.where(email: "test2@example.com").first_or_create(password: "password", password_confirmation: "password")
+# Clear existing data (optional, use with caution)
+Ingredient.destroy_all
+RecipeIngredient.destroy_all
+Recipe.destroy_all
+User.destroy_all
 
-# Assuming user1 and user2 are already created as mentioned in the previous code
+# Create seed data using a do block
+# Add user creation and other seed data here
+# Example:
 
-# Recipe data for user1
-user1_recipes = [
-  {
-    name: 'Classic Pancakes',
-    instructions: 'Mix the dry ingredients in one bowl and wet ingredients in another. Combine the two and cook the batter on a griddle.',
-    cook_time: '15 minutes',
-    ingredients: 'Flour, milk, eggs, baking powder, sugar, salt',
-    course: 'Breakfast',
-    servings: 4,
-    allergies: 'None',
-    tutorial_link: 'https://example.com/classic-pancakes-tutorial',
-    recipe_image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
-  },
-  {
-    name: 'Vegetarian Pasta Primavera',
-    instructions: 'Boil the pasta, sauté vegetables, and mix everything with sauce.',
-    cook_time: '30 minutes',
-    ingredients: 'Pasta, zucchini, broccoli, bell peppers, cherry tomatoes, Alfredo sauce',
-    course: 'Dinner',
-    servings: 3,
-    allergies: 'None',
-    tutorial_link: 'https://example.com/vegetarian-pasta-primavera-tutorial',
-    recipe_image: 'https://images.unsplash.com/photo-1492370284958-c20b15c692d2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1049&q=80'
-  }
-]
+# Create Users (optional)
+user1 = User.create(email: 'user1@example.com', password: 'password')
+user2 = User.create(email: 'user2@example.com', password: 'password')
 
-# Recipe data for user2
-user2_recipes = [
-  {
-    name: 'Grilled Chicken Salad',
-    instructions: 'Grill the chicken, chop the vegetables, and toss everything together with dressing.',
-    cook_time: '25 minutes',
-    ingredients: 'Chicken breasts, lettuce, tomatoes, cucumbers, bell peppers, dressing',
-    course: 'Lunch',
-    servings: 2,
-    allergies: 'None',
-    tutorial_link: 'https://example.com/grilled-chicken-salad-tutorial',
-    recipe_image: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1015&q=80'
-  },
-  {
-    name: 'Chocolate Chip Cookies',
-    instructions: 'Cream butter and sugar, mix in eggs and vanilla, add dry ingredients and chocolate chips, and bake the cookies.',
-    cook_time: '12 minutes',
-    ingredients: 'Butter, sugar, eggs, vanilla extract, flour, baking soda, salt, chocolate chips',
-    course: 'Dessert',
-    servings: 20,
-    allergies: 'Contains dairy and gluten',
-    tutorial_link: 'https://example.com/chocolate-chip-cookies-tutorial',
-    recipe_image: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1015&q=80'
-  }
-]
+# Create Ingredients
+ingredient1 = Ingredient.create(name: 'Ingredient 1')
+ingredient2 = Ingredient.create(name: 'Ingredient 2')
+ingredient3 = Ingredient.create(name: 'Ingredient 3')
 
-# Data for user1 recipes
-user1_recipes.each do |recipe|
-  user1.recipes.create(recipe)
-  p "created: #{recipe}"
-end
+# Create Recipes without triggering the validation
+recipe1 = Recipe.new(
+  name: 'Recipe 1',
+  instructions: 'Cook this way...',
+  cook_time: '30 minutes',
+  course: 'Main Course',
+  servings: 4.5,
+  allergies: 'Gluten',
+  tutorial_link: 'https://example.com/tutorial1',
+  recipe_image: 'https://example.com/recipe1.jpg',
+  user: user1
+)
 
-# Data for user2 recipes
-user2_recipes.each do |recipe|
-  user2.recipes.create(recipe)
-  p "created: #{recipe}"
-end
+recipe2 = Recipe.new(
+  name: 'Recipe 2',
+  instructions: 'Cook that way...',
+  cook_time: '45 minutes',
+  course: 'Dessert',
+  servings: 6.0,
+  allergies: 'Dairy',
+  tutorial_link: 'https://example.com/tutorial2',
+  recipe_image: 'https://example.com/recipe2.jpg',
+  user: user2
+)
+
+# Save the recipes without validation
+recipe1.save(validate: false)
+recipe2.save(validate: false)
+
+# Add the ingredients to the recipes
+recipe1.ingredients << [ingredient1, ingredient2]
+recipe2.ingredients << [ingredient1, ingredient3]
+
+# Additional recipe seeding as needed...

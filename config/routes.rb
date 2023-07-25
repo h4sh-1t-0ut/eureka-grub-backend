@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :recipe_ingredients
   resources :ingredients
-  resources :recipes
+  resources :recipes, only: [:index, :show, :new, :create, :edit, :update, :destroy] # Add :update and :destroy options
   devise_for :users,
     path: '',
     path_names: {

@@ -1,144 +1,81 @@
 RSpec.describe Recipe, type: :model do
-  let(:user) { User.create(
-    email: 'test@example.com',
-    password: 'password',
-    password_confirmation: 'password'
-    )
-  }
+  let(:user) { User.create(email: 'user@example.com', password: 'password123') }
+  let(:ingredient1) { Ingredient.create(name: 'Ingredient 1') }
+  let(:ingredient2) { Ingredient.create(name: 'Ingredient 2') }
 
-  it 'should validate presence of name' do
-    recipe = user.recipes.create(
-      instructions: 'Mix the dry ingredients in one bowl and wet ingredients in another. Combine the two and cook the batter on a griddle.',
-      cook_time: '15 minutes',
-      ingredients: 'Flour, milk, eggs, baking powder, sugar, salt',
-      course: 'Breakfast',
-      servings: 4,
+  subject(:recipe) do
+    Recipe.new(
+      name: 'Sample Recipe',
+      instructions: 'Sample instructions for the recipe.',
+      cook_time: '30 minutes',
+      course: 'Dessert',
+      servings: 2,
       allergies: 'None',
-      tutorial_link: 'https://example.com/classic-pancakes-tutorial',
-      recipe_image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
+      tutorial_link: 'https://example.com/sample-recipe-tutorial',
+      recipe_image: 'https://example.com/sample-recipe-image.jpg',
+      user: user
     )
+  end
+
+  before do
+    recipe.ingredients << [ingredient1, ingredient2]
+  end
+
+  it 'is valid with all required attributes' do
+    expect(recipe).to be_valid
+  end
+
+  it 'is invalid without a name' do
+    recipe.name = nil
+    expect(recipe).not_to be_valid
     expect(recipe.errors[:name]).to include("can't be blank")
   end
 
-  it 'should validate presence of instructions' do
-    recipe = user.recipes.create(
-      name: 'Classic Pancakes',
-      cook_time: '15 minutes',
-      ingredients: 'Flour, milk, eggs, baking powder, sugar, salt',
-      course: 'Breakfast',
-      servings: 4,
-      allergies: 'None',
-      tutorial_link: 'https://example.com/classic-pancakes-tutorial',
-      recipe_image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
-    )
+  it 'is invalid without instructions' do
+    recipe.instructions = nil
+    expect(recipe).not_to be_valid
     expect(recipe.errors[:instructions]).to include("can't be blank")
   end
 
-  it 'should validate presence of cook_time' do
-    recipe = user.recipes.create(
-      name: 'Classic Pancakes',
-      instructions: 'Mix the dry ingredients in one bowl and wet ingredients in another. Combine the two and cook the batter on a griddle.',
-      ingredients: 'Flour, milk, eggs, baking powder, sugar, salt',
-      course: 'Breakfast',
-      servings: 4,
-      allergies: 'None',
-      tutorial_link: 'https://example.com/classic-pancakes-tutorial',
-      recipe_image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
-    )
+  it 'is invalid without cook_time' do
+    recipe.cook_time = nil
+    expect(recipe).not_to be_valid
     expect(recipe.errors[:cook_time]).to include("can't be blank")
   end
 
-  it 'should validate presence of ingredients' do
-    recipe = user.recipes.create(
-      name: 'Classic Pancakes',
-      instructions: 'Mix the dry ingredients in one bowl and wet ingredients in another. Combine the two and cook the batter on a griddle.',
-      cook_time: '15 minutes',
-      course: 'Breakfast',
-      servings: 4,
-      allergies: 'None',
-      tutorial_link: 'https://example.com/classic-pancakes-tutorial',
-      recipe_image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
-    )
+  it 'is invalid without ingredients' do
+    recipe.ingredients = []
+    expect(recipe).not_to be_valid
     expect(recipe.errors[:ingredients]).to include("can't be blank")
   end
 
-  it 'should validate presence of course' do
-    recipe = user.recipes.create(
-      name: 'Classic Pancakes',
-      instructions: 'Mix the dry ingredients in one bowl and wet ingredients in another. Combine the two and cook the batter on a griddle.',
-      cook_time: '15 minutes',
-      ingredients: 'Flour, milk, eggs, baking powder, sugar, salt',
-      servings: 4,
-      allergies: 'None',
-      tutorial_link: 'https://example.com/classic-pancakes-tutorial',
-      recipe_image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
-    )
+  it 'is invalid without course' do
+    recipe.course = nil
+    expect(recipe).not_to be_valid
     expect(recipe.errors[:course]).to include("can't be blank")
   end
 
-  it 'should validate presence of servings' do
-    recipe = user.recipes.create(
-      name: 'Classic Pancakes',
-      instructions: 'Mix the dry ingredients in one bowl and wet ingredients in another. Combine the two and cook the batter on a griddle.',
-      cook_time: '15 minutes',
-      ingredients: 'Flour, milk, eggs, baking powder, sugar, salt',
-      course: 'Breakfast',
-      allergies: 'None',
-      tutorial_link: 'https://example.com/classic-pancakes-tutorial',
-      recipe_image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
-    )
+  it 'is invalid without servings' do
+    recipe.servings = nil
+    expect(recipe).not_to be_valid
     expect(recipe.errors[:servings]).to include("can't be blank")
   end
 
-  it 'should validate presence of allergies' do
-    recipe = user.recipes.create(
-      name: 'Classic Pancakes',
-      instructions: 'Mix the dry ingredients in one bowl and wet ingredients in another. Combine the two and cook the batter on a griddle.',
-      cook_time: '15 minutes',
-      ingredients: 'Flour, milk, eggs, baking powder, sugar, salt',
-      course: 'Breakfast',
-      servings: 4,
-      tutorial_link: 'https://example.com/classic-pancakes-tutorial',
-      recipe_image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
-    )
+  it 'is invalid without allergies' do
+    recipe.allergies = nil
+    expect(recipe).not_to be_valid
     expect(recipe.errors[:allergies]).to include("can't be blank")
   end
 
-  it 'should validate presence of tutorial_link' do
-    recipe = user.recipes.create(
-      name: 'Classic Pancakes',
-      instructions: 'Mix the dry ingredients in one bowl and wet ingredients in another. Combine the two and cook the batter on a griddle.',
-      cook_time: '15 minutes',
-      ingredients: 'Flour, milk, eggs, baking powder, sugar, salt',
-      course: 'Breakfast',
-      servings: 4,
-      allergies: 'None',
-      recipe_image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
-    )
+  it 'is invalid without tutorial_link' do
+    recipe.tutorial_link = nil
+    expect(recipe).not_to be_valid
     expect(recipe.errors[:tutorial_link]).to include("can't be blank")
   end
 
-  it 'should validate presence of recipe_image' do
-    recipe = user.recipes.create(
-      name: 'Classic Pancakes',
-      instructions: 'Mix the dry ingredients in one bowl and wet ingredients in another. Combine the two and cook the batter on a griddle.',
-      cook_time: '15 minutes',
-      ingredients: 'Flour, milk, eggs, baking powder, sugar, salt',
-      course: 'Breakfast',
-      servings: 4,
-      allergies: 'None',
-      tutorial_link: 'https://example.com/classic-pancakes-tutorial',
-      )
+  it 'is invalid without recipe_image' do
+    recipe.recipe_image = nil
+    expect(recipe).not_to be_valid
     expect(recipe.errors[:recipe_image]).to include("can't be blank")
   end
-
 end
-
-
-
-
-
-
-
-
- 

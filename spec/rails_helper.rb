@@ -1,5 +1,8 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
+
+require 'database_cleaner'
+
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
@@ -20,7 +23,8 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
+#Dir[Rails.root.join('spec', 'factories', '**', '*.rb')].each { |file| require file }
+
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
@@ -44,6 +48,43 @@ RSpec.configure do |config|
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.
+
+  RSpec.configure do |config|
+    config.before(:suite) do
+      DatabaseCleaner.clean_with(:truncation)
+    end
+  
+    config.before(:each) do
+      DatabaseCleaner.strategy = :transaction
+    end
+  
+    config.before(:each, js: true) do
+      DatabaseCleaner.strategy = :truncation
+    end
+  
+    config.before(:each) do
+      DatabaseCleaner.start
+    end
+  
+    config.after(:each) do
+      DatabaseCleaner.clean
+    end
+  end
+
+  # spec/rails_helper.rb
+
+# ...
+
+RSpec.configure do |config|
+  # ...
+
+  # Include Devise test helpers for authentication
+  config.include Devise::Test::IntegrationHelpers, type: :request
+
+  # ...
+end
+
+  
   #
   # You can disable this behaviour by removing the line below, and instead
   # explicitly tag your specs with their type, e.g.:
