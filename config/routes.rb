@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   resources :recipe_ingredients
   resources :ingredients
-  resources :recipes, only: [:index, :show, :new, :create, :edit, :update, :destroy] # Add :update and :destroy options
+  resources :recipes, only: [:index, :show, :create, :update, :destroy]
+  namespace :api do
+  # resources :recipes, only: [:index, :show, :create, :update, :destroy]
   devise_for :users,
     path: '',
     path_names: {
@@ -13,4 +15,5 @@ Rails.application.routes.draw do
       sessions: 'users/sessions',
       registrations: 'users/registrations'
     }
+end
 end
