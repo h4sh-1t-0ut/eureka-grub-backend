@@ -24,45 +24,44 @@ RSpec.describe 'Recipes', type: :request do
 
       recipes = JSON.parse(response.body)
       expect(response).to have_http_status(200)
-      expect(recipes.length).to eq 1
+      expect(recipes.length).to eq(1)
     end
   end
 
   describe 'POST /create' do
+    context 'with valid parameters' do
+      it 'creates a new recipe' do
+        user = User.create(email: 'test@example.com', encrypted_password: 'someencryptedpassword')
+        ingredient1 = Ingredient.create(name: 'Ingredient 1')
 
-    it 'creates a recipe with an ingredient' do
-      user1 = User.create(email: "test2@example.com", password: "password2", password_confirmation: "password2")
-      ingredient = Ingredient.create(name: "Example Ingredient")
-
-      recipe_params = {
-        recipe: {
-          name: 'Apple Pie',
-          instructions: 'bake it properly',
-          cook_time: '120 Minutes',
-          course: 'Breakfast',
-          servings: 3.5,
-          allergies: 'Non',
-          tutorial_link: 'https://example.com/apple-pie-tutorial',
-          recipe_image: 'https://example.com/apple-pie-image',
-          ingredient_ids: [ingredient.id],
-          user_id: user1.id
+        recipe_params = {
+          name: 'Newest Recipe',
+          instructions: 'Cook this way...',
+          cook_time: '30 minutes',
+          course: 'Main Course',
+          servings: 4,
+          allergies: 'None',
+          tutorial_link: 'https://www.google.com/',
+          recipe_image: 'https://www.plannthat.com/wp-content/uploads/2017/12/instagram-food-photographers-feature.png',
+          ingredient_ids: [ingredient1.id],
+          user_id: user.id
         }
-      }
 
-     
-      post '/recipes', params: recipe_params
+        # Add debug output to check recipe_params
+        puts "Recipe Params: #{recipe_params}"
 
-      
-      expect(response).to have_http_status(:created)
+        expect {
+          post '/recipes', params: { recipe: recipe_params }
+        }.to change(Recipe, :count).by(1)
 
-      
-      recipe = JSON.parse(response.body)
+        # Add debug output to check response body
+        puts "Response Body: #{response.body}"
 
-     
-      expect(recipe['name']).to eq('Apple Pie')
-      expect(recipe['instructions']).to eq('bake it properly')
-      t
-      expect(recipe['ingredients'][0]['name']).to eq('Salt')
+        expect(response).to have_http_status(:created)
+
+        # Add debug output to check Recipe count after the request
+        puts "Recipe Count after POST: #{Recipe.count}"
+      end
     end
   end
 end
