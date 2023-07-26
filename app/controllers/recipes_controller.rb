@@ -11,8 +11,8 @@ class RecipesController < ApplicationController
   def create
     recipe = Recipe.create(recipe_params)
   
-    if recipe.save
-      render json: recipe, status: :created
+    if recipe.valid?
+      render json: recipe, status: 201
     else
       puts recipe.errors.full_messages.inspect # Add this line for debugging
       render json: { errors: recipe.errors.full_messages }, status: :unprocessable_entity
@@ -48,7 +48,7 @@ class RecipesController < ApplicationController
   # end
 
   def recipe_params
-    params.require(:recipe).permit(:name, :instructions, :cook_time, :course, :servings, :allergies, :tutorial_link, :recipe_image, ingredient_ids: [])
+    params.require(:recipe).permit(:name, :instructions, :cook_time, :course, :servings, :allergies, :tutorial_link, :recipe_image, :ingredients, :user_id)
   end
 end
 
